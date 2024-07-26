@@ -2,26 +2,23 @@ import handler
 from bot_config import *
 
 cmds = {
-    "/start": handler.helper,
-    "начать": handler.helper,
-    "help": handler.helper,
-    "помощь": handler.helper,
-    "команды": handler.helper,
-    "привет": handler.helper,
-    "хочу знать цену": handler.check_price,
-    "когда следующий клуб?": handler.in_work,
-    "когда следующий клуб": handler.in_work,
-    "как записаться на занятия?": handler.in_work,
-    "как записаться на занятия": handler.in_work,
-    "гайд по релокации": handler.in_work,
-    "гайд «как улучшить английский летом»": handler.in_work,
-    "гайд как улучшить английский летом": handler.in_work,
-    "как улучшить английский летом": handler.in_work,
+    "/start": handler.MessageHandlers.helper,
+    "начать": handler.MessageHandlers.helper,
+    "help": handler.MessageHandlers.helper,
+    "помощь": handler.MessageHandlers.helper,
+    "команды": handler.MessageHandlers.helper,
+    "привет": handler.MessageHandlers.helper,
+    "расскажи про клуб (что? где? когда?)": handler.MessageHandlers.club_info,
+    "хочу записаться в клуб!": handler.MessageHandlers.in_work,
+    "мне нужны бесплатные материалы!": handler.MessageHandlers.in_work,
+    "ты сказал 18+? а что там?": handler.MessageHandlers.in_work,
 }
 
 callbacks = {
-    "pay_button": (handler.payment, 'Хорошо! Давай оплачивать!'),
+    "pay_button": (handler.CommandsHandlers.payment, 'Хорошо! Давай оплачивать!'),
     "cancel_button": (handler.show_main_menu, 'Хорошо! Тогда до следующего раза!'),
+    "online_club_button": (handler.CommandsHandlers.show_club_info, handler.answers['online_club']),
+    "offline_club_button": (handler.CommandsHandlers.show_club_info, handler.answers['offline_club']),
 }
 
 @bot.message_handler(content_types=['text'])
