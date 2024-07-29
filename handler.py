@@ -40,17 +40,26 @@ class MessageHandlers:
         inline_club_info_markup.add(buttonOnlineClub, buttonOfflineClub)
         bot.send_message(message.from_user.id, answers['club_info'], reply_markup=inline_club_info_markup)
 
+    @staticmethod
+    def show_video(message):
+        inline_club_video_markup = types.InlineKeyboardMarkup()
+        buttonOnlineVideo = types.InlineKeyboardButton(text='Видео клуба онлайн', callback_data='online_club_video')
+        buttonOfflineVideo = types.InlineKeyboardButton(text='Видео клуба оффлайн', callback_data='offline_club_video')
+        inline_club_video_markup.add(buttonOnlineVideo, buttonOfflineVideo)
+        bot.send_message(message.from_user.id, answers['club_info'], reply_markup=inline_club_video_markup)
+
 
 class CommandsHandlers:
     @staticmethod
     def show_club_info(chat_id):
-        show_club_info_markup = types.InlineKeyboardMarkup()
-        buttonVideoClub = types.InlineKeyboardButton(text='Хочу посмотреть видео, как проходит клуб!', callback_data='video_club_button')
-        buttonPayment = types.InlineKeyboardButton(text='Покупаю! Куда платить?', callback_data='pay_button')
-        show_club_info_markup.add(buttonVideoClub, buttonPayment)
+        show_club_info_markup = types.ReplyKeyboardMarkup()
+        buttonVideoClub = types.KeyboardButton(text='Хочу посмотреть видео, как проходит клуб!')
+        buttonPayment = types.KeyboardButton(text='Покупаю! Куда платить?')
+        buttonToMenu = types.KeyboardButton(text='Обратно в меню')
+        show_club_info_markup.add(buttonVideoClub, buttonPayment, buttonToMenu)
         bot.send_message(chat_id, answers['pre_payment'], reply_markup=show_club_info_markup)
 
     @staticmethod
     def payment(chat_id):
-        payment_markup = show_main_menu()
+        payment_markup = MessageHandlers.show_main_menu()
         bot.send_message(chat_id, answers['payment'], reply_markup=payment_markup)

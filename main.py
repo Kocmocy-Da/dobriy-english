@@ -12,6 +12,7 @@ cmds = {
     "хочу записаться в клуб!": handler.MessageHandlers.in_work,
     "мне нужны бесплатные материалы!": handler.MessageHandlers.in_work,
     "ты сказал 18+? а что там?": handler.MessageHandlers.in_work,
+    "хочу посмотреть видео, как проходит клуб!": handler.MessageHandlers.show_video,
 }
 
 callbacks = {
