@@ -4,16 +4,16 @@ from messages_keeper import answers
 
 
 def show_main_menu(chat_id = None):
-    markup = types.ReplyKeyboardMarkup()
+    main_menu_markup = types.ReplyKeyboardMarkup()
     buttonClubInfo = types.KeyboardButton("Расскажи про клуб (что? где? когда?)")
     buttonClubSignUp = types.KeyboardButton("Хочу записаться в клуб!")
     buttonFreeContent = types.KeyboardButton("Мне нужны бесплатные материалы!")
     buttonAdults = types.KeyboardButton("Ты сказал 18+? А что там?")
-    markup.add(buttonClubInfo, buttonClubSignUp, buttonFreeContent, buttonAdults)
+    main_menu_markup.add(buttonClubInfo, buttonClubSignUp, buttonFreeContent, buttonAdults)
     if chat_id is None:
-        return markup
+        return main_menu_markup
     else:
-        bot.send_message(chat_id, answers['helper'], reply_markup=markup)
+        bot.send_message(chat_id, answers['helper'], reply_markup=main_menu_markup)
         return
 
 class MessageHandlers:
@@ -48,6 +48,24 @@ class MessageHandlers:
         inline_club_video_markup.add(buttonOnlineVideo, buttonOfflineVideo)
         bot.send_message(message.from_user.id, answers['club_info'], reply_markup=inline_club_video_markup)
 
+    @staticmethod
+    def free_materials(message):
+        free_markup = show_main_menu()
+        bot.send_message(message.from_user.id, answers['free_materials'], reply_markup=free_markup)
+
+    @staticmethod
+    def for_adults(message):
+        adults_markup = show_main_menu()
+        bot.send_message(message.from_user.id, answers['for_adults'], reply_markup=adults_markup)
+
+    @staticmethod
+    def ready_pay(message):
+        ready_pay_markup = types.ReplyKeyboardMarkup()
+        buttonPayment = types.KeyboardButton("Всё, оплачиваю!")
+        buttonBack = types.KeyboardButton("Обратно в меню")
+        ready_pay_markup.add(buttonPayment, buttonBack)
+        bot.send_message(message.from_user.id, answers['ready_pay'], reply_markup=ready_pay_markup)
+
 
 class CommandsHandlers:
     @staticmethod
@@ -60,6 +78,13 @@ class CommandsHandlers:
         bot.send_message(chat_id, answers['pre_payment'], reply_markup=show_club_info_markup)
 
     @staticmethod
-    def payment(chat_id):
-        payment_markup = MessageHandlers.show_main_menu()
-        bot.send_message(chat_id, answers['payment'], reply_markup=payment_markup)
+    def show_club_video(chat_id, mode):
+        if mode == 'online':
+            answer = 'Тут будет видео онлайн-клуба'
+        elif mode == 'offline':
+            answer = 'Тут будет видео офлайн-клуба'
+        video_markup = types.ReplyKeyboardMarkup()
+        buttonPayment = types.KeyboardButton("Покупаю! Куда платить?")
+        buttonBack = types.KeyboardButton("Обратно в меню")
+        video_markup.add(buttonPayment, buttonBack)
+        bot.send_message(chat_id, answer, reply_markup=video_markup)
